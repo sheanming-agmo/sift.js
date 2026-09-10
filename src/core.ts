@@ -348,6 +348,7 @@ export type Options = {
     [identifier: string]: OperationCreator<any>;
   };
   compare: (a, b) => boolean;
+  allowStringWhere?: boolean;
 };
 
 const createNamedOperation = (
@@ -409,11 +410,12 @@ const createNestedOperation = (
 export const createQueryOperation = <TItem, TSchema = TItem>(
   query: Query<TSchema>,
   owneryQuery: any = null,
-  { compare, operations }: Partial<Options> = {},
+  { compare, operations, allowStringWhere }: Partial<Options> = {},
 ): QueryOperation<TItem> => {
   const options = {
     compare: compare || equals,
     operations: Object.assign({}, operations || {}),
+    allowStringWhere,
   };
 
   const [selfOperations, nestedOperations] = createQueryOperations(

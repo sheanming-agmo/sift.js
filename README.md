@@ -345,6 +345,14 @@ Matches based on some javascript comparison
 ); // ["frank"]
 ```
 
+> **Security.** A string `$where` is compiled with `new Function` (arbitrary code execution). Never pass a query whose shape or values can be influenced by untrusted input to `$where` — note that query-string parsers such as `qs` turn `?a[$where]=code` into `{ a: { $where: "code" } }`, which `$where` also runs. If any part of the query is untrusted, disable string bodies with `{ allowStringWhere: false }` (a function `$where` still works):
+>
+> ```javascript
+> sift({ $where: "…" }, { allowStringWhere: false }); // throws
+> ```
+>
+> See [CVE-2026-85625](https://www.cve.org/CVERecord?id=CVE-2026-85625). Building with `CSP_ENABLED` also rejects string `$where`. A future major version may default `allowStringWhere` to `false`; pass it explicitly if you depend on either behaviour.
+
 ### \$elemMatch
 
 Matches elements of array

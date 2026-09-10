@@ -18,10 +18,11 @@ import {
 const createDefaultQueryOperation = <TItem, TSchema extends TItem = TItem>(
   query: Query<TSchema>,
   ownerQuery: any,
-  { compare, operations }: Partial<Options> = {},
+  { compare, operations, allowStringWhere }: Partial<Options> = {},
 ) => {
   return createQueryOperation(query, ownerQuery, {
     compare,
+    allowStringWhere,
     operations: Object.assign({}, defaultOperations, operations || {}),
   });
 };

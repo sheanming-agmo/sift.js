@@ -244,6 +244,9 @@ createQueryTester({ $eq: 5 }, { operations: { $eq, $in } });
   sift({ $where: "this.name === 'frank'" }),
 ); // ["frank"]
 [{ name: "frank" }, { name: "joe" }].filter(
+  sift({ $where: "this.name === 'frank'" }, { allowStringWhere: false }),
+); // throws at query-build time
+[{ name: "frank" }, { name: "joe" }].filter(
   sift({
     $where: function () {
       return (this as any).name === "frank";
