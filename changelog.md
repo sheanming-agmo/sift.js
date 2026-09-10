@@ -1,3 +1,8 @@
+## 17.1.4
+
+- Fix https://github.com/crcn/sift.js/issues/276 (CVE-2026-85625)
+- Add the `allowStringWhere` option. String `$where` bodies are still permitted by default (compiled with `new Function`); pass `{ allowStringWhere: false }` to reject them, which you should do whenever any part of the query can be influenced by untrusted input. The default may flip to `false` in a future major version — pass `allowStringWhere` explicitly if you rely on either behaviour.
+
 ## 17.0.0
 
 - Fix https://github.com/crcn/sift.js/issues/243
