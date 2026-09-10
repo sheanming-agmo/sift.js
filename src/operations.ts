@@ -410,12 +410,17 @@ export const $where = (
 
   if (isFunction(params)) {
     test = params;
-  } else if (!process.env.CSP_ENABLED) {
-    test = new Function("obj", "return " + params);
-  } else {
+  } else if (process.env.CSP_ENABLED) {
     throw new Error(
       `In CSP mode, sift does not support strings in "$where" condition`,
     );
+  } else if (options.allowStringWhere === false) {
+    throw new Error(
+      `sift: string values for "$where" are disabled via the ` +
+        `"allowStringWhere: false" option. Pass a function instead.`,
+    );
+  } else {
+    test = new Function("obj", "return " + params);
   }
 
   return new EqualsOperation((b) => test.bind(b)(b), ownerQuery, options);
